@@ -1,12 +1,24 @@
 // src/app.ts
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
+import cookieParser from "cookie-parser"
+import authRouter from "./routes/auth.route";
+import cloudRouter from "./routes/cloud.route";
 dotenv.config();
-import usersRouter from "./routes/users.route";
-// import fileRouter from "./routes/file.route"; // Импорт нового маршрута
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
+
+app.use(
+  cors({
+    origin: process.env.CORS_URL,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+app.use(cookieParser());
 
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
@@ -14,8 +26,8 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-app.use("/api", usersRouter);
-// app.use("/api/files", fileRouter); // Используем новый роутер для файлов
+app.use("/api", authRouter);
+app.use("/api", cloudRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
