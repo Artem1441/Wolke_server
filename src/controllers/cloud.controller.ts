@@ -61,8 +61,10 @@ class CloudController {
           compressedBuffer = await compressVideo(file.buffer);
         }
 
-        const data = await S3Upload(fileKey, compressedBuffer, file.mimetype);
-        const url = data.Location;
+        // const data = await S3Upload(fileKey, compressedBuffer, file.mimetype);
+        // const url = data.Location;
+        const url = await S3Upload(fileKey, compressedBuffer, file.mimetype);
+        console.log(url);
 
         const id = await uploadFileQuery(
           userId,
