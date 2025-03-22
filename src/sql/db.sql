@@ -8,6 +8,8 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     email_verified BOOLEAN DEFAULT FALSE,
     phone_verified BOOLEAN DEFAULT FALSE,
+    is_confirmed_phone BOOLEAN DEFAULT false,
+    is_confirmed_email BOOLEAN DEFAULT false,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -30,10 +32,10 @@ EXECUTE FUNCTION update_timestamp();
 CREATE INDEX idx_users_login ON users (login);
 
 -- delete all for users
-DROP TRIGGER IF EXISTS trigger_update_timestamp ON users;
-DROP FUNCTION IF EXISTS update_timestamp;
-DROP INDEX IF EXISTS idx_users_login;
-DROP TABLE IF EXISTS users CASCADE;
+-- DROP TRIGGER IF EXISTS trigger_update_timestamp ON users;
+-- DROP FUNCTION IF EXISTS update_timestamp;
+-- DROP INDEX IF EXISTS idx_users_login;
+-- DROP TABLE IF EXISTS users CASCADE;
 
 
 
@@ -68,17 +70,17 @@ FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
 -- delete all for files
-DROP TRIGGER IF EXISTS trigger_update_updated_at ON files;
-DROP FUNCTION IF EXISTS update_updated_at_column;
-DROP INDEX IF EXISTS idx_files_file_url;
-DROP INDEX IF EXISTS idx_files_user_id;
-DROP TABLE IF EXISTS files CASCADE;
+-- DROP TRIGGER IF EXISTS trigger_update_updated_at ON files;
+-- DROP FUNCTION IF EXISTS update_updated_at_column;
+-- DROP INDEX IF EXISTS idx_files_file_url;
+-- DROP INDEX IF EXISTS idx_files_user_id;
+-- DROP TABLE IF EXISTS files CASCADE;
 
 
 -- verification_codes
 CREATE TABLE verification_codes (
     id SERIAL PRIMARY KEY,
-    user_login VARCHAR(50) NOT NULL REFERENCES public.users(login) ON DELETE CASCADE,
+    user_login VARCHAR(50) NOT NULL REFERENCES users(login) ON DELETE CASCADE,
     type VARCHAR(10) NOT NULL CHECK (type IN ('phone', 'email')),
     value VARCHAR(100) NOT NULL,
     code VARCHAR(4) NOT NULL,

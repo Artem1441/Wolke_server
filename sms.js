@@ -40,3 +40,9 @@ sendSms(login, password, phone, message, sender);
 // const password = "Artemedo1441";
 // const login = "proboi11012025";
 // const password = "ZC3KMigoU9sy";
+
+DB_USER=postgres
+DB_HOST=localhost
+DB_NAME=wolke
+DB_PASSWORD=14410
+DB_PORT=5432
