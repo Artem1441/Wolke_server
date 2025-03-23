@@ -17,6 +17,7 @@ const nodemailer_1 = __importDefault(require("nodemailer"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const sendEmail = (email, topic, message) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(email, topic, message, String(process.env.MAIL_USER), String(process.env.MAIL_PASSWORD));
     const transporter = nodemailer_1.default.createTransport({
         service: "gmail", // or other services like 'yahoo', 'outlook'
         auth: {
