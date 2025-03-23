@@ -7,6 +7,7 @@ export const sendEmail = async (
   topic: string,
   message: string
 ) => {
+  console.log(email, topic, message, String(process.env.MAIL_USER), String(process.env.MAIL_PASSWORD))
   const transporter = nodemailer.createTransport({
     service: "gmail", // or other services like 'yahoo', 'outlook'
     auth: {

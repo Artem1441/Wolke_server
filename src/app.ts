@@ -5,11 +5,13 @@ import cors from "cors";
 import cookieParser from "cookie-parser"
 import authRouter from "./routes/auth.route";
 import cloudRouter from "./routes/cloud.route";
+import { sendEmail } from "./helpers/mail.helper";
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+sendEmail("artem.volcano@gmail.com", "Test", "test")
 app.use(
   cors({
     origin: process.env.CORS_URL,
