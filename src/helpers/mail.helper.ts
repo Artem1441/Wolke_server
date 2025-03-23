@@ -7,7 +7,13 @@ export const sendEmail = async (
   topic: string,
   message: string
 ) => {
-  console.log(email, topic, message, String(process.env.MAIL_USER), String(process.env.MAIL_PASSWORD))
+  console.log(
+    email,
+    topic,
+    message,
+    String(process.env.MAIL_USER),
+    String(process.env.MAIL_PASSWORD)
+  );
   const transporter = nodemailer.createTransport({
     service: "gmail", // or other services like 'yahoo', 'outlook'
     auth: {
@@ -25,10 +31,12 @@ export const sendEmail = async (
 
   try {
     return transporter.sendMail(mailOptions, (error, info) => {
+      console.log(error, info);
       if (error) return `Ошибка: ${error}`;
       else return `Письмо отправлено: ${info.response}`;
     });
   } catch (error) {
+    console.log(error);
     return { status: false, message: "Ошибка при отправке письма на почту" };
   }
 };
