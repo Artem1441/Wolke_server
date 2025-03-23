@@ -33,6 +33,8 @@ const sendEmail = (email, topic, message) => __awaiter(void 0, void 0, void 0, f
             user: String(process.env.MAIL_USER),
             pass: String(process.env.MAIL_PASSWORD),
         },
+        logger: true,
+        debug: true,
     });
     const mailOptions = {
         from: String(process.env.MAIL_USER),
