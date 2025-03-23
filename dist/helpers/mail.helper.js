@@ -33,6 +33,7 @@ const sendEmail = (email, topic, message) => __awaiter(void 0, void 0, void 0, f
     };
     try {
         return transporter.sendMail(mailOptions, (error, info) => {
+            console.log(error, info);
             if (error)
                 return `Ошибка: ${error}`;
             else
@@ -40,6 +41,7 @@ const sendEmail = (email, topic, message) => __awaiter(void 0, void 0, void 0, f
         });
     }
     catch (error) {
+        console.log(error);
         return { status: false, message: "Ошибка при отправке письма на почту" };
     }
 });
