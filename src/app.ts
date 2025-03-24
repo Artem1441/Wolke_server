@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-sendEmail("artem.volcano@gmail.com", "Test", "test")
+// sendEmail("artem.volcano@gmail.com", "Test", "test")
 app.use(
   cors({
     origin: process.env.CORS_URL,
