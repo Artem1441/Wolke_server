@@ -8,34 +8,50 @@ import ffmpegInstaller from "@ffmpeg-installer/ffmpeg";
 
 ffmpeg.setFfmpegPath(ffmpegInstaller.path);
 
+// export const compressImage = async (buffer: Buffer): Promise<Buffer> => {
+//   const image = sharp(buffer);
+//   const metadata = await image.metadata();
+
+//   if (metadata.format === "png") {
+//     return image
+//       .png({
+//         quality: 80,
+//         compressionLevel: 9,
+//         progressive: true,
+//         palette: false,
+//         adaptiveFiltering: true,
+//       })
+//       .toBuffer();
+//   }
+
+//   if (metadata.format === "jpeg" || metadata.format === "jpg") {
+//     return image
+//       .jpeg({
+//         quality: 70,
+//         progressive: true,
+//         optimizeScans: true,
+//         chromaSubsampling: '4:4:4',
+//       })
+//       .toBuffer();
+//   }
+
+//   return buffer;
+// };
+import tinify from "tinify";
+
+tinify.key = "SrChG7xg56Tm3PW9fPyfVGWTMwJKVh3S";
+
 export const compressImage = async (buffer: Buffer): Promise<Buffer> => {
-  const image = sharp(buffer);
-  const metadata = await image.metadata(); // Получаем метаданные изображения
+  try {
+    const source = tinify.fromBuffer(buffer);
 
-  if (metadata.format === "png") {
-    return image
-      .png({
-        quality: 80, // Сжимаем с качеством 80
-        compressionLevel: 9, // Максимальное сжатие
-        progressive: true,
-        palette: false,
-        adaptiveFiltering: true,
-      })
-      .toBuffer();
+    const compressedBuffer = Buffer.from(await source.toBuffer());
+
+    return compressedBuffer;
+  } catch (error) {
+    console.error("Ошибка при сжатии изображения:", error);
+    throw error;
   }
-
-  if (metadata.format === "jpeg" || metadata.format === "jpg") {
-    return image
-      .jpeg({
-        quality: 70, // Сжимаем с качеством 70
-        progressive: true,
-        optimizeScans: true,
-        chromaSubsampling: '4:4:4', // Используем максимальную субсэмплинг
-      })
-      .toBuffer();
-  }
-
-  return buffer;
 };
 
 export const compressVideo = async (inputBuffer: Buffer): Promise<Buffer> => {

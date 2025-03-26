@@ -14,38 +14,50 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.compressVideo = exports.compressImage = void 0;
 const uuid_1 = require("uuid");
-const sharp_1 = __importDefault(require("sharp"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const os_1 = require("os");
 const fluent_ffmpeg_1 = __importDefault(require("fluent-ffmpeg"));
 const ffmpeg_1 = __importDefault(require("@ffmpeg-installer/ffmpeg"));
 fluent_ffmpeg_1.default.setFfmpegPath(ffmpeg_1.default.path);
+// export const compressImage = async (buffer: Buffer): Promise<Buffer> => {
+//   const image = sharp(buffer);
+//   const metadata = await image.metadata();
+//   if (metadata.format === "png") {
+//     return image
+//       .png({
+//         quality: 80,
+//         compressionLevel: 9,
+//         progressive: true,
+//         palette: false,
+//         adaptiveFiltering: true,
+//       })
+//       .toBuffer();
+//   }
+//   if (metadata.format === "jpeg" || metadata.format === "jpg") {
+//     return image
+//       .jpeg({
+//         quality: 70,
+//         progressive: true,
+//         optimizeScans: true,
+//         chromaSubsampling: '4:4:4',
+//       })
+//       .toBuffer();
+//   }
+//   return buffer;
+// };
+const tinify_1 = __importDefault(require("tinify"));
+tinify_1.default.key = "SrChG7xg56Tm3PW9fPyfVGWTMwJKVh3S";
 const compressImage = (buffer) => __awaiter(void 0, void 0, void 0, function* () {
-    const image = (0, sharp_1.default)(buffer);
-    const metadata = yield image.metadata(); // Получаем метаданные изображения
-    if (metadata.format === "png") {
-        return image
-            .png({
-            quality: 80, // Сжимаем с качеством 80
-            compressionLevel: 9, // Максимальное сжатие
-            progressive: true,
-            palette: false,
-            adaptiveFiltering: true,
-        })
-            .toBuffer();
+    try {
+        const source = tinify_1.default.fromBuffer(buffer);
+        const compressedBuffer = Buffer.from(yield source.toBuffer());
+        return compressedBuffer;
     }
-    if (metadata.format === "jpeg" || metadata.format === "jpg") {
-        return image
-            .jpeg({
-            quality: 70, // Сжимаем с качеством 70
-            progressive: true,
-            optimizeScans: true,
-            chromaSubsampling: '4:4:4', // Используем максимальную субсэмплинг
-        })
-            .toBuffer();
+    catch (error) {
+        console.error("Ошибка при сжатии изображения:", error);
+        throw error;
     }
-    return buffer;
 });
 exports.compressImage = compressImage;
 const compressVideo = (inputBuffer) => __awaiter(void 0, void 0, void 0, function* () {

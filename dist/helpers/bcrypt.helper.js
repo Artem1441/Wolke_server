@@ -1,4 +1,5 @@
 "use strict";
+// helpers/bcrypt.helper.ts
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -18,7 +19,7 @@ const bcryptHash = (password) => __awaiter(void 0, void 0, void 0, function* () 
     return yield bcrypt_1.default.hash(password, 10);
 });
 exports.bcryptHash = bcryptHash;
-const bcryptCompare = (password, hash) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield bcrypt_1.default.compare(password, hash);
+const bcryptCompare = (password, hashPass) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield bcrypt_1.default.compare(password, hashPass);
 });
 exports.bcryptCompare = bcryptCompare;

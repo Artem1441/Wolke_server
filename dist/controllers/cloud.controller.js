@@ -25,7 +25,7 @@ class CloudController {
             console.log(is_active);
             const userId = req.user.id;
             const uploadedFiles = [];
-            const unsupportedFiles = []; // Массив для хранения ошибок неподдерживаемых файлов
+            const unsupportedFiles = [];
             for (const file of req.files) {
                 const fileKey = (0, uuid_1.v4)();
                 const fileType = file.mimetype.split("/")[1];
@@ -48,10 +48,7 @@ class CloudController {
                     else if (["mp4", "mov", "avi"].includes(normalizedFileType)) {
                         compressedBuffer = yield (0, compressFile_helper_1.compressVideo)(file.buffer);
                     }
-                    // const data = await S3Upload(fileKey, compressedBuffer, file.mimetype);
-                    // const url = data.Location;
                     const url = yield (0, s3_helper_1.S3Upload)(fileKey, compressedBuffer, file.mimetype);
-                    console.log(url);
                     const id = yield (0, cloud_db_1.uploadFileQuery)(userId, fileName, normalizedFileType, compressedBuffer.length, url, is_active);
                     uploadedFiles.push({
                         id,
